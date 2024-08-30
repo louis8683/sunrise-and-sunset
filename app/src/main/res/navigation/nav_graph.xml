@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.android.sunriseandsunset.list.ListFragment"
+        android:label="My Locations"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_newItemFragment"
+            app:destination="@id/newItemFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newItemFragment"
+        android:name="com.example.android.sunriseandsunset.newitem.NewItemFragment"
+        android:label="New Location"
+        tools:layout="@layout/fragment_new_item" >
+        <action
+            android:id="@+id/action_newItemFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.android.sunriseandsunset.map.MapFragment"
+        android:label="Select location"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_newItemFragment"
+            app:destination="@id/newItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.android.sunriseandsunset.detail.DetailFragment"
+        android:label="Location Detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="sunriseSunset"
+            app:argType="com.example.android.sunriseandsunset.data.SunriseSunset" />
+    </fragment>
+</navigation>
