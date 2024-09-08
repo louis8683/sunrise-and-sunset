@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/newItemFragment"
+        android:icon="@drawable/list_24px"
+        android:title="New" />
+    <item
+        android:id="@+id/detailFragment"
+        android:icon="@drawable/list_24px"
+        android:title="Home" />
+    <item
+        android:id="@+id/listFragment"
+        android:icon="@drawable/list_24px"
+        android:title="Locations" />
+</menu>

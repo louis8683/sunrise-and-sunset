@@ -26,7 +26,9 @@ data class SunriseSunset(
     val latitude: Double,
     val longitude: Double,
     val sunrise: LocalTime,
-    val sunset: LocalTime
+    val sunset: LocalTime,
+
+    var position: Int // This field stores the item order
 ) : Parcelable {
     /**
      * Formats the sunrise time to a string in "HH:mm" format.

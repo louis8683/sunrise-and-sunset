@@ -14,6 +14,9 @@ import com.example.android.sunriseandsunset.data.SunriseSunset
 class SunriseSunsetAdapter(private val onItemClickListener: OnItemClickListener)
     : ListAdapter<SunriseSunset, SunriseSunsetAdapter.ViewHolder>(SunriseSunsetDiffCallback()) {
 
+    private val VIEW_TYPE_MAIN = 0
+    private val VIEW_TYPE_SUNRISE_SUNSET = 1
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d("Adapter", "onBindViewHolder: $position")
         val item = getItem(position)
@@ -24,10 +27,28 @@ class SunriseSunsetAdapter(private val onItemClickListener: OnItemClickListener)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater
-            .inflate(R.layout.list_item_sunrise_sunset, parent, false)
+        return when(viewType) {
+            VIEW_TYPE_MAIN -> {
+                val view = layoutInflater
+                    .inflate(R.layout.list_item_main, parent, false)
+                ViewHolder(view)
+            }
+            VIEW_TYPE_SUNRISE_SUNSET -> {
+                val view = layoutInflater
+                    .inflate(R.layout.list_item_sunrise_sunset, parent, false)
+                ViewHolder(view)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
 
-        return ViewHolder(view)
+    override fun getItemViewType(position: Int): Int {
+//        return if (position == 0) {
+//            VIEW_TYPE_MAIN
+//        } else {
+//            VIEW_TYPE_SUNRISE_SUNSET
+//        }
+        return VIEW_TYPE_SUNRISE_SUNSET
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

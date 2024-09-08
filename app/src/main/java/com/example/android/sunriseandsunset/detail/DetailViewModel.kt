@@ -1,16 +1,45 @@
 package com.example.android.sunriseandsunset.detail
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.android.sunriseandsunset.data.Repository
 import com.example.android.sunriseandsunset.data.SunriseSunset
+import com.example.android.sunriseandsunset.data.SunriseSunsetDatabase
+import com.example.android.sunriseandsunset.data.SunriseSunsetRepository
+import kotlinx.coroutines.launch
 
-class DetailViewModel: ViewModel() {
+class DetailViewModel(application: Application, itemId: Long?): AndroidViewModel(application) {
 
-    private val _sunriseSunset = MutableLiveData<SunriseSunset>()
-    val sunriseSunset: LiveData<SunriseSunset> = _sunriseSunset
+    private val repository: Repository by lazy {
+        val sunriseSunsetDao = SunriseSunsetDatabase.getDatabase(application).sunriseSunsetDao()
+        SunriseSunsetRepository(sunriseSunsetDao)
+    }
+    private var _sunriseSunset: LiveData<SunriseSunset?> = repository.getFirstSunriseSunset()
+    val sunriseSunset: LiveData<SunriseSunset?>
+        get() = _sunriseSunset
 
-    fun setData(sunriseSunset: SunriseSunset) {
-        _sunriseSunset.value = sunriseSunset
+    fun setData(id: Long) {
+        // Fetch LiveData from Room using the ID
+        _sunriseSunset = repository.getSunriseSunsetById(id)
+    }
+}
+
+class DetailViewModelFactory(
+    private val application: Application,
+    private val itemId: Long?
+) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
+            return DetailViewModel(application, itemId) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -8,4 +8,8 @@ interface Repository {
     suspend fun insertSunriseSunset(sunriseSunset: SunriseSunset)
     suspend fun updateSunriseSunset(sunriseSunset: SunriseSunset)
     suspend fun deleteSunriseSunset(id: Long)
+
+    // Expose the DAO function for updating item positions
+    suspend fun updateItemPositions(items: List<SunriseSunset>)
+    fun getFirstSunriseSunset(): LiveData<SunriseSunset?>
 }

@@ -26,4 +26,13 @@ class SunriseSunsetRepository(private val dao: SunriseSunsetDao): Repository {
             dao.deleteSunriseSunset(it)
         }
     }
+
+    // Expose the DAO function for updating item positions
+    override suspend fun updateItemPositions(items: List<SunriseSunset>) {
+        dao.updateItemPositions(items)
+    }
+
+    override fun getFirstSunriseSunset(): LiveData<SunriseSunset?> {
+        return dao.getFirstSunriseSunset()
+    }
 }

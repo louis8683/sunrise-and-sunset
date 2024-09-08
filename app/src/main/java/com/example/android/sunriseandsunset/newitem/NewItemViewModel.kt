@@ -107,16 +107,29 @@ class NewItemViewModel(application: Application): AndroidViewModel(application) 
     fun saveToDatabase() {
         if (locationName.value != null && latitude.value != null && longitude.value != null && _sunrise.value != null && _sunset.value != null) {
 
-            val item = SunriseSunset(
-                Random.nextLong(),
-                locationName.value!!,
-                latitude.value!!,
-                longitude.value!!,
-                _sunrise.value!!,
-                _sunset.value!!
-            )
-
             viewModelScope.launch {
+                // Fetch the current list to determine the last position
+                val currentList = withContext(Dispatchers.IO) {
+                    repository.getAllSunriseSunset().value ?: emptyList()
+                }
+
+                // Determine the next position (last position + 1)
+                val nextPosition = if (currentList.isNotEmpty()) {
+                    currentList.maxOf { it.position } + 1
+                } else {
+                    0
+                }
+
+                val item = SunriseSunset(
+                    Random.nextLong(),
+                    locationName.value!!,
+                    latitude.value!!,
+                    longitude.value!!,
+                    _sunrise.value!!,
+                    _sunset.value!!,
+                    position = nextPosition
+                )
+
                 withContext(Dispatchers.IO) {
                     repository.insertSunriseSunset(item)
                 }
