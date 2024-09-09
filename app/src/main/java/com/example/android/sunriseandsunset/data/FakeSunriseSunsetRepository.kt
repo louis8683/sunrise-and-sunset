@@ -57,4 +57,8 @@ object FakeSunriseSunsetRepository : Repository {
         firstItemLiveData.value = firstItem
         return firstItemLiveData
     }
+
+    override suspend fun getSize(): Int {
+        return sunriseSunsetList.size
+    }
 }

@@ -12,4 +12,5 @@ interface Repository {
     // Expose the DAO function for updating item positions
     suspend fun updateItemPositions(items: List<SunriseSunset>)
     fun getFirstSunriseSunset(): LiveData<SunriseSunset?>
+    suspend fun getSize(): Int
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/newItemFragment"
+        android:id="@+id/mapFragment"
         android:icon="@drawable/list_24px"
-        android:title="New" />
+        android:title="Map" />
     <item
         android:id="@+id/detailFragment"
         android:icon="@drawable/list_24px"

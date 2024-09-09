@@ -20,14 +20,13 @@ class DetailViewModel(application: Application, itemId: Long?): AndroidViewModel
         val sunriseSunsetDao = SunriseSunsetDatabase.getDatabase(application).sunriseSunsetDao()
         SunriseSunsetRepository(sunriseSunsetDao)
     }
-    private var _sunriseSunset: LiveData<SunriseSunset?> = repository.getFirstSunriseSunset()
+    private var _sunriseSunset: LiveData<SunriseSunset?> = if (itemId == null) {
+        repository.getFirstSunriseSunset()
+    } else {
+        repository.getSunriseSunsetById(itemId)
+    }
     val sunriseSunset: LiveData<SunriseSunset?>
         get() = _sunriseSunset
-
-    fun setData(id: Long) {
-        // Fetch LiveData from Room using the ID
-        _sunriseSunset = repository.getSunriseSunsetById(id)
-    }
 }
 
 class DetailViewModelFactory(

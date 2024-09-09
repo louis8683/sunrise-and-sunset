@@ -48,17 +48,12 @@ class ListFragment : Fragment(), OnItemClickListener {
             (binding.recyclerView.adapter as SunriseSunsetAdapter).submitList(list)
         })
 
-        binding.fab.setOnClickListener {
-            val action = ListFragmentDirections.actionListFragmentToNewItemFragment()
-            findNavController().navigate(action)
-        }
-
         return binding.root
     }
 
     override fun onItemClick(item: SunriseSunset) {
         val action = ListFragmentDirections.actionListFragmentToDetailFragment()
-        action.setSunriseSunset(item)
+        action.setSunriseSunsetId(item.id)
         findNavController().navigate(action)
     }
 

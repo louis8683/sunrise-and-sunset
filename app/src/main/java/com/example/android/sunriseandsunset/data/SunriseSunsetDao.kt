@@ -20,6 +20,10 @@ interface SunriseSunsetDao {
     @Query("SELECT * FROM sunrise_sunset_table ORDER BY position ASC LIMIT 1")
     fun getFirstSunriseSunset(): LiveData<SunriseSunset?>
 
+    // Query to get the count of all rows in the table
+    @Query("SELECT COUNT(*) FROM sunrise_sunset_table")
+    suspend fun getSize(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSunriseSunset(sunriseSunset: SunriseSunset)
 

@@ -11,20 +11,8 @@
         android:label="My Locations"
         tools:layout="@layout/fragment_list" >
         <action
-            android:id="@+id/action_listFragment_to_newItemFragment"
-            app:destination="@id/newItemFragment" />
-        <action
             android:id="@+id/action_listFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/newItemFragment"
-        android:name="com.example.android.sunriseandsunset.newitem.NewItemFragment"
-        android:label="New Location"
-        tools:layout="@layout/fragment_new_item" >
-        <action
-            android:id="@+id/action_newItemFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -32,8 +20,8 @@
         android:label="Select location"
         tools:layout="@layout/fragment_map" >
         <action
-            android:id="@+id/action_mapFragment_to_newItemFragment"
-            app:destination="@id/newItemFragment" />
+            android:id="@+id/action_mapFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -41,12 +29,8 @@
         android:label="Location Detail"
         tools:layout="@layout/fragment_detail" >
         <argument
-            android:name="sunriseSunset"
-            app:argType="com.example.android.sunriseandsunset.data.SunriseSunset"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <action
-            android:id="@+id/action_detailFragment_to_listFragment"
-            app:destination="@id/listFragment" />
+            android:name="sunriseSunsetId"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
 </navigation>

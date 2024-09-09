@@ -20,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.android.sunriseandsunset.BuildConfig
 import com.example.android.sunriseandsunset.R
 import com.example.android.sunriseandsunset.databinding.FragmentMapBinding
-import com.example.android.sunriseandsunset.newitem.NewItemViewModel
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -79,11 +78,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.buttonConfirmSelection.setOnClickListener {
             // Save the selection
             viewModel.selection.value?.let {
-                val latLng = it.latLng
-                val newItemViewModel: NewItemViewModel by activityViewModels()
-                newItemViewModel.locationName.value = it.title
-                newItemViewModel.setLatLng(latLng)
-                findNavController().popBackStack()
+                viewModel.saveSelection()
             } ?: run {
                 Snackbar.make(binding.root, "Please select a location before proceeding.", Snackbar.LENGTH_LONG)
                     .setAction("OK") {
@@ -92,6 +87,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     .show()
             }
         }
+
+        // LiveData Observers
+        viewModel.navigateToList.observe(viewLifecycleOwner, Observer {
+            it?.let { sunriseSunset ->
+                val action = MapFragmentDirections.actionMapFragmentToDetailFragment()
+                action.setSunriseSunsetId(sunriseSunset.id)
+                findNavController().navigate(action)
+            }
+        })
 
         // Initialize Places
         if (!Places.isInitialized()) {

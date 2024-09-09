@@ -35,4 +35,8 @@ class SunriseSunsetRepository(private val dao: SunriseSunsetDao): Repository {
     override fun getFirstSunriseSunset(): LiveData<SunriseSunset?> {
         return dao.getFirstSunriseSunset()
     }
+
+    override suspend fun getSize(): Int {
+        return dao.getSize()
+    }
 }

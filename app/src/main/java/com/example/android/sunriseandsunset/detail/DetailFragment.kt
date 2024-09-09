@@ -38,19 +38,19 @@ class DetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
-        val sunriseSunset: SunriseSunset? = args.sunriseSunset
-        Log.d(TAG, "Arg: $sunriseSunset")
+        val sunriseSunsetId: Long = args.sunriseSunsetId
+        Log.d(TAG, "Arg: $sunriseSunsetId")
 
         // Create the ViewModelFactory
-        val viewModelFactory = DetailViewModelFactory(requireActivity().application, sunriseSunset?.id)
+        val viewModelFactory = if (sunriseSunsetId == 0L) {
+            DetailViewModelFactory(requireActivity().application, null)
+        }
+        else {
+            DetailViewModelFactory(requireActivity().application, sunriseSunsetId)
+        }
 
         // Get the ViewModel using the factory
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
-
-
-        if (sunriseSunset != null)
-            {viewModel.setData(sunriseSunset.id)
-        }
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -64,31 +64,4 @@ class DetailFragment : Fragment() {
 
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_detail, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_list -> {
-                        Log.d(TAG, "Clicked the list menu icon")
-                        val action = DetailFragmentDirections.actionDetailFragmentToListFragment()
-                        findNavController().navigate(action)
-                        true
-                    }
-                    else -> {
-                        Log.d(TAG, "Unhandled icon clicked")
-                        false
-                    }
-                }
-            }
-
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
 }
