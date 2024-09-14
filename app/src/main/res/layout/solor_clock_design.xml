@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.sunriseandsunset.detail.DetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutSolarClock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageViewDashedCircle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/dotted_circle" />
+
+        <ImageView
+            android:id="@+id/imageViewGroundLine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewDashedCircle"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewDashedCircle"
+            app:layout_constraintStart_toStartOf="@+id/imageViewDashedCircle"
+            app:layout_constraintTop_toTopOf="@+id/imageViewDashedCircle"
+            app:srcCompat="@drawable/line" />
+
+        <ImageView
+            android:id="@+id/imageViewGroundIndicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewGroundLine"
+            app:layout_constraintStart_toStartOf="@+id/imageViewGroundLine"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewGroundLine"
+            app:srcCompat="@drawable/ground_indicator" />
+
+        <ImageView
+            android:id="@+id/imageViewCity"
+            android:layout_width="95.8dp"
+            android:layout_height="42.6dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/imageViewGroundLine"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewDashedCircle"
+            app:layout_constraintStart_toStartOf="@+id/imageViewDashedCircle"
+            app:srcCompat="@drawable/pngegg" />
+
+        <ImageView
+            android:id="@+id/imageViewSun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-25dp"
+            android:layout_marginTop="-25dp"
+            android:layout_marginEnd="-25dp"
+            android:layout_marginBottom="-25dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewDashedCircle"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewDashedCircle"
+            app:layout_constraintStart_toStartOf="@+id/imageViewDashedCircle"
+            app:layout_constraintTop_toTopOf="@+id/imageViewDashedCircle"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/sun" />
+
+        <TextView
+            android:id="@+id/textViewSunset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageViewGroundLine"
+            app:layout_constraintStart_toStartOf="@+id/imageViewDashedCircle"
+            app:formattedLocalTime="@{viewModel.sunriseSunset.sunset}"
+            tools:text="18:17" />
+
+        <TextView
+            android:id="@+id/textViewSunrise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageViewGroundLine"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewDashedCircle"
+            app:formattedLocalTime="@{viewModel.sunriseSunset.sunrise}"
+            tools:text="6:15" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

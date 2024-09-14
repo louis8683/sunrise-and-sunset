@@ -19,9 +19,12 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.e175.klaus.solarpositioning.SPA
+import net.e175.klaus.solarpositioning.SunriseResult.RegularDay
 import retrofit2.await
 import java.io.IOException
 import java.time.LocalTime
+import java.time.ZonedDateTime
 import kotlin.random.Random
 
 class MapViewModel(application: Application): AndroidViewModel(application) {
@@ -90,7 +93,21 @@ class MapViewModel(application: Application): AndroidViewModel(application) {
                 _sunrise.value = it.parsedSunrise()
                 _sunset.value = it.parsedSunset()
             }
+
+
+            // Using the solar positioning package
+            // This value will differ from the API for a few minutes, but sunrise and sunset times
+            // were not meant to be accurate anyways.
+            val dateTime = ZonedDateTime.now()
+            val result = SPA.calculateSunriseTransitSet(
+                dateTime,
+                mapSelection.latLng.latitude, // latitude
+                mapSelection.latLng.longitude, // longitude
+                0.0); // delta T
+            Log.d(TAG, "Package SPA result: ${result as RegularDay}")
+
         }
+
     }
 
     suspend fun saveToDatabase() {

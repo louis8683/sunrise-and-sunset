@@ -1,5 +1,7 @@
 package com.example.android.sunriseandsunset.list
 
+import android.content.res.Resources
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,13 +13,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.DOWN
+import androidx.recyclerview.widget.ItemTouchHelper.LEFT
+import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.sunriseandsunset.R
 import com.example.android.sunriseandsunset.data.SunriseSunset
 import com.example.android.sunriseandsunset.databinding.FragmentListBinding
-import com.example.android.sunriseandsunset.list.ListFragmentDirections
-import java.time.LocalTime
+import kotlin.math.abs
+import kotlin.math.sign
+
 
 class ListFragment : Fragment(), OnItemClickListener {
 
@@ -60,6 +66,8 @@ class ListFragment : Fragment(), OnItemClickListener {
     val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
         ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
 
+        val swipeThreshold = 100f
+
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
@@ -85,12 +93,49 @@ class ListFragment : Fragment(), OnItemClickListener {
             viewModel.onItemMovedCompleted()
         }
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            TODO("Not yet implemented")
-        }
-
         override fun isLongPressDragEnabled(): Boolean {
             return true // Enable drag on long press
+        }
+
+        // Swipe related functions
+
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
+            return makeMovementFlags(UP or DOWN, LEFT)
+        }
+
+        override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+            val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+            return swipeThreshold / screenWidth
+        }
+
+        override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
+            return Float.MAX_VALUE
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            Log.d(TAG, "Item Swiped")
+            // Get the position of the swiped item
+            val position = viewHolder.adapterPosition
+
+            // Remove item from adapter or trigger actions (e.g. delete, edit)
+        }
+
+        override fun onChildDraw(
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+            // Set a maximum swipe distance
+            val clampedDx = if (abs(dX) > swipeThreshold) { sign(dX) * swipeThreshold } else dX
+
+            super.onChildDraw(c, recyclerView, viewHolder, clampedDx, dY, actionState, isCurrentlyActive)
         }
     }
 }

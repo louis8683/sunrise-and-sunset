@@ -32,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -91,6 +91,9 @@ dependencies {
     // Places
     implementation(libs.kotlin.bom)
     implementation(libs.places)
+
+    // Solar positioning
+    implementation(libs.solarpositioning)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.room.testing)

@@ -14,13 +14,34 @@ interface SunriseSunsetService {
     ): Call<SunriseSunsetResponse>
 }
 
-object Network {
-    private const val BASE_URL = "https://api.sunrisesunset.io/"
+// API Interface
+interface OpenWeatherApiForecastService {
+    @GET("data/2.5/forecast")
+    fun getWeatherForecast(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("appid") apiKey: String
+    ): Call<WeatherResponse>
+}
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+object Network {
+    private const val SUNRISE_BASE_URL = "https://api.sunrisesunset.io/"
+
+    private val sunriseRetrofit = Retrofit.Builder()
+        .baseUrl(SUNRISE_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val sunriseSunsetService = retrofit.create(SunriseSunsetService::class.java)
+    val sunriseSunsetService: SunriseSunsetService = sunriseRetrofit.create(SunriseSunsetService::class.java)
+
+    private const val OPEN_WEATHER_BASE_URL = "https://api.openweathermap.org/"
+
+    val forecastApi: OpenWeatherApiForecastService by lazy {
+        Retrofit.Builder()
+            .baseUrl(OPEN_WEATHER_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(OpenWeatherApiForecastService::class.java)
+    }
+    
 }

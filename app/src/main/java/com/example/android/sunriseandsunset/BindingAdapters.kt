@@ -21,7 +21,8 @@ fun TextView.bindFormattedDouble(number: Double?) {
 @BindingAdapter("formattedLocalTime")
 fun TextView.bindFormattedLocalTime(time: LocalTime?) {
     time?.let {
-        val formatter = DateTimeFormatter.ofPattern("h:mm:ss a")
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
         text = time.format(formatter)
     }
 }
+

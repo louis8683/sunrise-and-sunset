@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,6 +22,9 @@ import androidx.navigation.fragment.navArgs
 import com.example.android.sunriseandsunset.R
 import com.example.android.sunriseandsunset.data.SunriseSunset
 import com.example.android.sunriseandsunset.databinding.FragmentDetailBinding
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 class DetailFragment : Fragment() {
 
@@ -55,11 +59,26 @@ class DetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.solarClockDesign.viewModel = viewModel
+
         viewModel.sunriseSunset.observe(viewLifecycleOwner, Observer {
             it?.let {
                 (activity as? AppCompatActivity)?.supportActionBar?.title = it.locationName
                 Log.d(TAG, "$it")
             }
+        })
+
+        // Set the sun position
+        viewModel.sunPercentage.observe(viewLifecycleOwner, Observer { p ->
+            val theta = 2 * PI * p
+            val biasX = (cos(theta) + 1).toFloat() / 2
+            val biasY = (sin(theta) + 1).toFloat() / 2
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(binding.solarClockDesign.constraintLayoutSolarClock)
+            constraintSet.setHorizontalBias(R.id.imageViewSun, biasX)
+            constraintSet.setVerticalBias(R.id.imageViewSun, biasY)
+            constraintSet.applyTo(binding.solarClockDesign.constraintLayoutSolarClock)
         })
 
         return binding.root
